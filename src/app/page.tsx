@@ -1,66 +1,73 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useState, useEffect } from 'react';
+import { api } from '@/lib/api';
 
 export default function Home() {
+  const [entities, setEntities] = useState<any[]>([]);
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Hämta alla entities vid mount
+  useEffect(() => {
+    fetchEntities();
+  }, []);
+
+  const fetchEntities = async () => {
+    try {
+      const data = await api.getTestEntities();
+      setEntities(data);
+    } catch (error) {
+      console.error('Failed to fetch:', error);
+    }
+  };
+
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      await api.createTestEntity(name);
+      setName('');
+      await fetchEntities(); // Refresh list
+    } catch (error) {
+      console.error('Failed to create:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <main className="min-h-screen p-8">
+      <h1 className="text-4xl font-bold mb-8">Platemates - Test</h1>
+      
+      <form onSubmit={handleCreate} className="mb-8">
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter test name"
+          className="border p-2 mr-2 text-black"
         />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          {loading ? 'Creating...' : 'Create'}
+        </button>
+      </form>
+
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Test Entities:</h2>
+        <ul className="space-y-2">
+          {entities.map((entity) => (
+            <li key={entity.id} className="border p-2">
+              {entity.name} - {new Date(entity.createdAt).toLocaleString()}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </main>
   );
 }
