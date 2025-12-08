@@ -1,72 +1,33 @@
-'use client';
+import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-import { useState, useEffect } from 'react';
-import { api } from '@/lib/api/client';
-
-export default function Home() {
-  const [entities, setEntities] = useState<any[]>([]);
-  const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  // Hämta alla entities vid mount
-  useEffect(() => {
-    fetchEntities();
-  }, []);
-
-  const fetchEntities = async () => {
-    try {
-      const data = await api.getTestEntities();
-      setEntities(data);
-    } catch (error) {
-      console.error('Failed to fetch:', error);
-    }
-  };
-
-  const handleCreate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    try {
-      await api.createTestEntity(name);
-      setName('');
-      await fetchEntities(); // Refresh list
-    } catch (error) {
-      console.error('Failed to create:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+export default async function Home() {
+  const { userId } = await auth();
+  
+  // If logged in, redirect to feed
+  if (userId) {
+    redirect("/feed");
+  }
 
   return (
-    <main className="min-h-screen p-8">
-      <h1 className="text-4xl font-bold mb-8">Platemates - Test</h1>
+    <main className="flex min-h-screen flex-col items-center justify-center p-24">
+      <h1 className="text-6xl font-bold mb-8">Platemates</h1>
+      <p className="text-xl mb-8 text-gray-600">Share meals with mates</p>
       
-      <form onSubmit={handleCreate} className="mb-8">
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Enter test name"
-          className="border p-2 mr-2 text-black"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+      <div className="flex gap-4">
+        <Link
+          href="/sign-in"
+          className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition"
         >
-          {loading ? 'Creating...' : 'Create'}
-        </button>
-      </form>
-
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Test Entities:</h2>
-        <ul className="space-y-2">
-          {entities.map((entity) => (
-            <li key={entity.id} className="border p-2">
-              {entity.name} - {new Date(entity.createdAt).toLocaleString()}
-            </li>
-          ))}
-        </ul>
+          Sign In
+        </Link>
+        <Link
+          href="/sign-up"
+          className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition"
+        >
+          Get Started
+        </Link>
       </div>
     </main>
   );
