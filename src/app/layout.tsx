@@ -1,7 +1,7 @@
-import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata } from "next";
 import "./globals.css";
-import { Header } from '@/components/layouts/Header';
+import { Header } from "@/components/layouts/Header";
+import { Providers } from "@/components/providers/Providers";
 
 export const metadata: Metadata = {
   title: "Platemates",
@@ -14,13 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body>
-          <Header/>
+    <html lang="en">
+      <body>
+        <Providers>
+          <Header />
           {children}
-        </body>
-      </html>
-    </ClerkProvider>
+        </Providers>
+      </body>
+    </html>
   );
 }
