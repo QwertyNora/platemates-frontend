@@ -15,8 +15,12 @@ export function useBackendUser() {
       if (!apiUrl) {
         throw new Error("NEXT_PUBLIC_API_URL is not defined");
       }
+
+      const template = process.env.NODE_ENV === 'production' 
+        ? 'platemates-api-production' 
+        : 'platemates-api';
       
-      const token = await getToken({ template: "platemates-api" });
+      const token = await getToken({ template });
       if (!token) {
         throw new Error("No Clerk token");
       }

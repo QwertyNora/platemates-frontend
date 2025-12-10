@@ -18,8 +18,12 @@ export default function FeedPage() {
       console.log("clerkUser:", clerkUser);
       console.log("email:", clerkUser?.emailAddresses[0]?.emailAddress);
       console.log("username:", clerkUser?.username);
+
+      const template = process.env.NODE_ENV === 'production' 
+      ? 'platemates-api-production' 
+      : 'platemates-api';
       
-      const token = await getToken({ template: "platemates-api" });
+      const token = await getToken({ template });
       console.log("token:", token);
       console.log("======================");
     };

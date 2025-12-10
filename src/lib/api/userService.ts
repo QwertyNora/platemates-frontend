@@ -18,7 +18,12 @@ export function useCurrentUser() {
   return useQuery<User>({
     queryKey: ["currentUser"],
     queryFn: async () => {
-       const token = await getToken({ template: "platemates-api" });
+
+        const template = process.env.NODE_ENV === 'production' 
+        ? 'platemates-api-production' 
+        : 'platemates-api';
+
+       const token = await getToken({ template });
       
       if (!token) {
         console.error("No token available from Clerk");
