@@ -3,7 +3,9 @@
 import { useCurrentUser } from "@/lib/api/userService";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import { AddRestaurantModal } from "@/components/features/restaurants/AddRestaurantModal";
+import { AddRestaurantModal } from "@/components/features/modals/AddRestaurantModal";
+import { RestaurantCard } from "@/components/features/restaurants/RestaurantCard";
+import { useMyRestaurants } from "@/lib/hooks/useMyRestaurants";
 
 export default function FeedPage() {
   const { isSignedIn, userId, getToken } = useAuth();
@@ -11,6 +13,13 @@ export default function FeedPage() {
   const { data: user, isLoading, error } = useCurrentUser();
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Fetch restaurants
+  const { 
+    data: restaurants, 
+    isLoading: isLoadingRestaurants,
+    error: restaurantsError 
+  } = useMyRestaurants('all');
 
   // Log Clerk user info
   useEffect(() => {
@@ -60,19 +69,21 @@ export default function FeedPage() {
   }
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header with Add Button */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold mb-2">Welcome, {user?.username}!</h1>
-            <p className="text-xl text-gray-600">Email: {user?.email}</p>
+            <h1 className="text-4xl font-bold mb-2">My Restaurants</h1>
+            <p className="text-lg text-gray-600">
+              {restaurants?.length || 0} {restaurants?.length === 1 ? 'place' : 'places'} to explore
+            </p>
           </div>
           
           {/* Add Restaurant Button */}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition shadow-lg"
+            className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition shadow-lg hover:shadow-xl"
           >
             <svg
               className="w-5 h-5"
@@ -91,11 +102,55 @@ export default function FeedPage() {
           </button>
         </div>
 
-        {/* Feed Content */}
-        <div className="bg-white rounded-2xl shadow-sm border p-8">
-          <p className="text-gray-500 text-center">
-            Your feed will appear here. Click "Add Restaurant" to get started!
-          </p>
+        {/* Restaurant List */}
+        <div className="space-y-4">
+          {isLoadingRestaurants ? (
+            <div className="bg-white rounded-2xl shadow-sm border p-8 text-center">
+              <div className="flex items-center justify-center gap-2">
+                <svg className="animate-spin h-5 w-5 text-orange-500" viewBox="0 0 24 24">
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                <span className="text-gray-600">Loading restaurants...</span>
+              </div>
+            </div>
+          ) : restaurantsError ? (
+            <div className="bg-white rounded-2xl shadow-sm border p-8 text-center">
+              <p className="text-red-600">Failed to load restaurants</p>
+              <p className="text-sm text-gray-500 mt-2">{restaurantsError.message}</p>
+            </div>
+          ) : restaurants && restaurants.length > 0 ? (
+            restaurants.map((userRestaurant) => (
+              <RestaurantCard
+                key={userRestaurant.id}
+                userRestaurant={userRestaurant}
+              />
+            ))
+          ) : (
+            <div className="bg-white rounded-2xl shadow-sm border p-12 text-center">
+              <div className="max-w-sm mx-auto">
+                <div className="text-6xl mb-4">🍽️</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  No restaurants yet
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Start building your restaurant wishlist! Click the button above to add your first place.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
