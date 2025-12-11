@@ -1,15 +1,67 @@
 // Domain models
+
+// ============================================
+// USER TYPES
+// ============================================
+
 export interface User {
   id: string;
+  clerkUserId: string;
   email: string;
-  name: string;
-  createdAt: Date;
+  username: string;
+  createdAt: string;
+  location?: string;
+  description?: string;
 }
 
-export interface TestEntity {
-  id: number;
+// ============================================
+// RESTAURANT TYPES
+// ============================================
+
+export interface Restaurant {
+  id: string;
+  googlePlaceId: string | null;
   name: string;
+  address: string;
+  cuisineType?: string;
+  phoneNumber?: string;
+  website?: string;
+  latitude?: number;
+  longitude?: number;
   createdAt: string;
 }
 
-// TODO: Add models later
+export interface UserRestaurant {
+  id: string;
+  restaurant: Restaurant;
+  status: 'WantToGo' | 'BeenTo';
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+  review?: RestaurantReview;
+}
+
+export interface RestaurantReview {
+  id: string;
+  rating: number; // 1-5
+  priceRange: number; // 1-4
+  notes?: string;
+  createdAt: string;
+}
+
+// ============================================
+// INPUT TYPES (for API calls)
+// ============================================
+
+export interface AddRestaurantManuallyDto {
+  name: string;
+  address: string;
+  cuisineType?: string;
+  notes?: string;
+}
+
+// ============================================
+// UI TYPES
+// ============================================
+
+export type FilterType = 'all' | 'want-to-go' | 'been-to';
