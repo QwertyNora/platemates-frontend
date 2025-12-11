@@ -60,6 +60,19 @@ export interface AddRestaurantManuallyDto {
   notes?: string;
 }
 
+export interface AddReviewDto {
+  rating: number; // 1-5
+  priceRange: number; // 1-4
+  notes?: string;
+}
+
+export interface UpdateRestaurantDto {
+  name?: string;
+  address?: string;
+  cuisineType?: string;
+  notes?: string;
+}
+
 // ============================================
 // UI TYPES
 // ============================================
