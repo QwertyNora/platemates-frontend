@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchRestaurants } from '@/lib/hooks/useSearchRestaurants';
 import { useAddRestaurantManually } from '@/lib/hooks/useAddRestaurant';
+import { getPlaceDetails } from '@/lib/api/restaurantService';
+import { useAuth } from '@clerk/nextjs';
 import type { GooglePlacePrediction } from '@/types/models';
 
 interface SearchRestaurantFormProps {
@@ -10,33 +12,57 @@ interface SearchRestaurantFormProps {
 }
 
 export function SearchRestaurantForm({ onSuccess }: SearchRestaurantFormProps) {
+  const { getToken } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [notes, setNotes] = useState('');
-  const { results, isLoading, error, search } = useSearchRestaurants();
+  const { results, isLoading, error, search, clearResults } = useSearchRestaurants();
   const addMutation = useAddRestaurantManually();
+
+  // Memoize search function to prevent infinite loops
+  const performSearch = useCallback((query: string) => {
+    if (query.trim().length >= 2) {
+      search(query);
+    }
+  }, [search]);
 
   // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (searchQuery.trim().length >= 2) {
-        search(searchQuery);
-      }
+      performSearch(searchQuery);
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [searchQuery]);
+  }, [searchQuery, performSearch]);
 
   const handleAddRestaurant = async (prediction: GooglePlacePrediction) => {
     try {
+      const template = process.env.NODE_ENV === 'production' 
+        ? 'platemates-api-production' 
+        : 'platemates-api';
+      
+      const token = await getToken({ template });
+      if (!token) {
+        console.error('No authentication token');
+        return;
+      }
+
+      // Fetch full place details to get coordinates
+      const placeDetails = await getPlaceDetails(prediction.placeId, token);
+
+      // Add restaurant with coordinates
       await addMutation.mutateAsync({
-        name: prediction.name,
-        address: prediction.address,
+        name: placeDetails.name,
+        address: placeDetails.address,
+        cuisineType: placeDetails.cuisineType || undefined,
         notes: notes || undefined,
+        latitude: placeDetails.latitude,
+        longitude: placeDetails.longitude,
       });
 
       // Success!
       setSearchQuery('');
       setNotes('');
+      clearResults();
       onSuccess();
     } catch (error) {
       console.error('Failed to add restaurant:', error);
