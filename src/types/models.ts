@@ -50,6 +50,21 @@ export interface RestaurantReview {
 }
 
 // ============================================
+// GOOGLE PLACES TYPES
+// ============================================
+
+export interface GooglePlacePrediction {
+  placeId: string;
+  name: string;
+  address: string;
+}
+
+export interface GooglePlacesSearchResult {
+  predictions: GooglePlacePrediction[];
+}
+
+
+// ============================================
 // INPUT TYPES (for API calls)
 // ============================================
 
