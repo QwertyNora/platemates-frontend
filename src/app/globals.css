@@ -1,2 +1,77 @@
 @import "tailwindcss";
 
+
+
+/* Google Places Autocomplete Container */
+.pac-container {
+    background-color: white !important;
+    border-radius: 0.75rem !important;
+    /* rounded-xl */
+    border: 1px solid #e5e7eb !important;
+    /* gray-200 */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    /* shadow-lg */
+    margin-top: 0.5rem !important;
+    /* mt-2 */
+    font-family: inherit !important;
+    z-index: 1000 !important;
+}
+
+/* Individual autocomplete items */
+.pac-item {
+    padding: 0.75rem 1rem !important;
+    /* px-4 py-3 */
+    border: none !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    /* gray-100 */
+    font-size: 0.875rem !important;
+    /* text-sm */
+    line-height: 1.5rem !important;
+    cursor: pointer !important;
+    transition: background-color 150ms ease-in-out !important;
+}
+
+.pac-item:last-child {
+    border-bottom: none !important;
+}
+
+/* Hover state - orange tint to match brand */
+.pac-item:hover {
+    background-color: #fff7ed !important;
+    /* orange-50 */
+}
+
+/* Selected/focused item */
+.pac-item-selected {
+    background-color: #ffedd5 !important;
+    /* orange-100 */
+}
+
+/* Hide Google's default location icon */
+.pac-icon {
+    display: none !important;
+}
+
+/* Main text (restaurant name or address) */
+.pac-item-query {
+    color: #111827 !important;
+    /* gray-900 */
+    font-weight: 500 !important;
+    /* font-medium */
+    font-size: 0.875rem !important;
+    /* text-sm */
+}
+
+/* Secondary text (address details) */
+.pac-matched {
+    font-weight: 600 !important;
+    /* font-semibold - highlight matched text */
+}
+
+/* "Powered by Google" logo container */
+.pac-logo::after {
+    margin: 0.5rem 1rem !important;
+    padding-top: 0.5rem !important;
+    border-top: 1px solid #f3f4f6 !important;
+    /* gray-100 */
+}
