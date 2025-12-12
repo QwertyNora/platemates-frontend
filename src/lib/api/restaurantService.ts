@@ -1,11 +1,37 @@
 import type { 
   AddRestaurantManuallyDto, 
   AddReviewDto,
+  GooglePlacesSearchResult,
   UpdateRestaurantDto,
   UserRestaurant 
 } from '@/types/models';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+/**
+ * Search for restaurants using Google Places
+ */
+export async function searchRestaurants(
+    query: string,
+    token: string
+): Promise<GooglePlacesSearchResult> {
+    const response = await fetch(
+        `${API_BASE_URL}/api/restaurants/search?query=${encodeURIComponent(query)}`,
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+    );
+
+    if (!response.ok){
+        const errorText = await response.text();
+        throw new Error(`Failed to search restaurants: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+}
+
 
 /**
  * Add a restaurant manually to "Want to Go" list
