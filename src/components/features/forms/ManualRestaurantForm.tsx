@@ -1,0 +1,163 @@
+"use client";
+
+import { useState } from 'react';
+import { useAddRestaurantManually } from '@/lib/hooks/useAddRestaurant';
+import type { AddRestaurantManuallyDto } from '@/types/models';
+
+interface ManualRestaurantFormProps {
+  onSuccess: () => void;
+}
+
+export function ManualRestaurantForm({ onSuccess }: ManualRestaurantFormProps) {
+  const [formData, setFormData] = useState<AddRestaurantManuallyDto>({
+    name: '',
+    address: '',
+    cuisineType: '',
+    notes: '',
+  });
+
+  const addMutation = useAddRestaurantManually();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await addMutation.mutateAsync(formData);
+      
+      // Success! Reset form and close
+      setFormData({
+        name: '',
+        address: '',
+        cuisineType: '',
+        notes: '',
+      });
+      onSuccess();
+    } catch (error) {
+      console.error('Failed to add restaurant:', error);
+    }
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6">
+      <div className="space-y-6">
+        {/* Restaurant Name */}
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-900 mb-2">
+            Restaurant Name *
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="e.g., Oaxen Krog"
+            required
+            maxLength={256}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+          />
+        </div>
+
+        {/* Address */}
+        <div>
+          <label htmlFor="address" className="block text-sm font-medium text-gray-900 mb-2">
+            Address *
+          </label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            placeholder="e.g., Beckholmsvägen 26, Stockholm"
+            required
+            maxLength={512}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+          />
+        </div>
+
+        {/* Cuisine Type */}
+        <div>
+          <label htmlFor="cuisineType" className="block text-sm font-medium text-gray-900 mb-2">
+            Cuisine Type
+          </label>
+          <input
+            type="text"
+            id="cuisineType"
+            name="cuisineType"
+            value={formData.cuisineType}
+            onChange={handleChange}
+            placeholder="e.g., Nordic, Italian, Japanese"
+            maxLength={128}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+          />
+        </div>
+
+        {/* Notes */}
+        <div>
+          <label htmlFor="notes" className="block text-sm font-medium text-gray-900 mb-2">
+            Notes
+          </label>
+          <textarea
+            id="notes"
+            name="notes"
+            value={formData.notes}
+            onChange={handleChange}
+            placeholder="Why do you want to go here?"
+            rows={4}
+            maxLength={1000}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+          />
+        </div>
+      </div>
+
+      {/* Submit Button */}
+      <div className="mt-6">
+        <button
+          type="submit"
+          disabled={addMutation.isPending || !formData.name || !formData.address}
+          className="w-full px-6 py-3 bg-orange-500 text-white text-base font-semibold rounded-xl hover:bg-orange-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {addMutation.isPending ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
+              </svg>
+              Adding...
+            </span>
+          ) : (
+            '➕ Add to Want-to-Go List'
+          )}
+        </button>
+
+        {addMutation.isError && (
+          <p className="mt-3 text-sm text-red-600 text-center">
+            Failed to add restaurant. Please try again.
+          </p>
+        )}
+      </div>
+    </form>
+  );
+}
