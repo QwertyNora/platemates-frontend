@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import type { UserRestaurant } from '@/types/models';
-import { EditRestaurantModal } from '@/components/features/modals/EditRestaurantModal';
 import { AddReviewModal } from '@/components/features/modals/AddReviewModal';
 import { ConfirmDeleteReviewModal } from '@/components/features/modals/ConfirmDeleteReviewModal';
-
+import { EditRestaurantModal } from '@/components/features/modals/EditRestaurantModal';
+import { ConfirmDeleteRestaurantModal } from '@/components/features/modals/ConfirmDeleteRestaurantModal';
+import { RestaurantCardDropdown } from './RestaurantCardDropdown';
 
 interface RestaurantCardProps {
   userRestaurant: UserRestaurant;
@@ -16,7 +17,8 @@ export function RestaurantCard({ userRestaurant }: RestaurantCardProps) {
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [isConfirmDeleteReviewOpen, setIsConfirmDeleteReviewOpen] = useState(false);
+  const [isConfirmDeleteRestaurantOpen, setIsConfirmDeleteRestaurantOpen] = useState(false);
 
   const isBeenTo = status === 'BeenTo';
 
@@ -117,32 +119,10 @@ export function RestaurantCard({ userRestaurant }: RestaurantCardProps) {
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
-            {/* Edit Button */}
-            <button
-              onClick={() => setIsEditModalOpen(true)}
-              className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-700 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-lg transition font-medium"
-              title="Edit restaurant"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                />
-              </svg>
-              Edit
-            </button>
-
             {/* Mark as Been To / Want to Go Button */}
             {isBeenTo ? (
               <button
-                onClick={() => setIsConfirmDeleteOpen(true)}
+                onClick={() => setIsConfirmDeleteReviewOpen(true)}
                 className="flex items-center gap-1 px-3 py-1.5 text-sm text-orange-700 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 rounded-lg transition font-medium"
                 title="Mark as Want to Go"
               >
@@ -183,6 +163,12 @@ export function RestaurantCard({ userRestaurant }: RestaurantCardProps) {
                 Mark as Been To
               </button>
             )}
+
+            {/* Dropdown Menu (More Options) */}
+            <RestaurantCardDropdown
+              onEdit={() => setIsEditModalOpen(true)}
+              onDelete={() => setIsConfirmDeleteRestaurantOpen(true)}
+            />
           </div>
         </div>
       </div>
@@ -202,8 +188,15 @@ export function RestaurantCard({ userRestaurant }: RestaurantCardProps) {
       />
 
       <ConfirmDeleteReviewModal
-        isOpen={isConfirmDeleteOpen}
-        onClose={() => setIsConfirmDeleteOpen(false)}
+        isOpen={isConfirmDeleteReviewOpen}
+        onClose={() => setIsConfirmDeleteReviewOpen(false)}
+        userRestaurantId={userRestaurant.id}
+        restaurantName={restaurant.name}
+      />
+
+      <ConfirmDeleteRestaurantModal
+        isOpen={isConfirmDeleteRestaurantOpen}
+        onClose={() => setIsConfirmDeleteRestaurantOpen(false)}
         userRestaurantId={userRestaurant.id}
         restaurantName={restaurant.name}
       />
