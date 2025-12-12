@@ -63,6 +63,18 @@ export interface GooglePlacesSearchResult {
   predictions: GooglePlacePrediction[];
 }
 
+export interface GooglePlaceDetails {
+  placeId: string;
+  name: string;
+  address: string;
+  cuisineType?: string;
+  phoneNumber?: string;
+  website?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+
 
 // ============================================
 // INPUT TYPES (for API calls)
@@ -73,6 +85,8 @@ export interface AddRestaurantManuallyDto {
   address: string;
   cuisineType?: string;
   notes?: string;
+  latitude?: number;   
+  longitude?: number;
 }
 
 export interface AddReviewDto {
