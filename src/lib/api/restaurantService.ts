@@ -1,6 +1,7 @@
 import type { 
   AddRestaurantManuallyDto, 
   AddReviewDto,
+  GooglePlaceDetails,
   GooglePlacesSearchResult,
   UpdateRestaurantDto,
   UserRestaurant 
@@ -56,6 +57,31 @@ export async function addRestaurantManually(
 
   return response.json();
 }
+
+/**
+ * Get detailed information about a place using its place_id
+ */
+export async function getPlaceDetails(
+  placeId: string,
+  token: string
+): Promise<GooglePlaceDetails> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/restaurants/place-details/${encodeURIComponent(placeId)}`,
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to get place details: ${response.status} - ${errorText}`);
+  }
+
+  return response.json();
+}
+
 
 /**
  * Get current user's restaurants
@@ -162,4 +188,27 @@ export async function updateRestaurant(
   }
 
   return response.json();
+}
+
+/**
+ * Delete a restaurant from user's list
+ */
+export async function deleteRestaurant(
+  userRestaurantId: string,
+  token: string
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/restaurants/${userRestaurantId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to delete restaurant: ${response.status} - ${errorText}`);
+  }
 }
