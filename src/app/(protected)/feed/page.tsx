@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { AddRestaurantModal } from "@/components/features/modals/AddRestaurantModal";
 import { RestaurantCard } from "@/components/features/restaurants/RestaurantCard";
 import { useMyRestaurants } from "@/lib/hooks/useMyRestaurants";
+import { FilterType } from "@/types/models";
 
 export default function FeedPage() {
   const { isSignedIn, userId, getToken } = useAuth();
@@ -13,13 +14,19 @@ export default function FeedPage() {
   const { data: user, isLoading, error } = useCurrentUser();
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filter, setFilter] = useState<FilterType>('all');
 
   // Fetch restaurants
   const { 
     data: restaurants, 
     isLoading: isLoadingRestaurants,
     error: restaurantsError 
-  } = useMyRestaurants('all');
+  } = useMyRestaurants(filter);
+
+  const allRestaurants = useMyRestaurants('all').data;
+  const wantToGoCount = allRestaurants?.filter(r => r.status == 'WantToGo').length || 0;
+  const beenToCount = allRestaurants?.filter(r => r.status == 'BeenTo').length || 0;
+  const totalCount = (allRestaurants?.length || 0);
 
   // Log Clerk user info
   useEffect(() => {
@@ -99,6 +106,39 @@ export default function FeedPage() {
               />
             </svg>
             Add Restaurant
+          </button>
+        </div>
+
+        {/* Filter buttons */}
+        <div className="flex items-center gap-3 mb-6">
+          <button
+            onClick={() => setFilter('all')}
+            className={`px-4 py-2 rounded-xl font-medium transition ${
+              filter === 'all'
+              ? 'bg-gray-900 text-white shadow-sm'
+              : 'bg-white text-gray-700 border border-gray-200 hover:border-gray-300'
+            }`}>
+            All ({totalCount})
+          </button>
+
+          <button
+            onClick={() => setFilter('want-to-go')}
+            className={`px-4 py-2 rounded-xl font-medium transition ${
+              filter === 'want-to-go'
+              ? 'bg-orange-500 text-white shadow-md'
+              : 'bg-white text-gray-700 border border-gray-200 hover:border-gray-300'
+            }`}>
+            🎯 Want to Go ({wantToGoCount})
+          </button>
+
+          <button
+            onClick={() => setFilter('been-to')}
+            className={`px-4 py-2 rounded-xl font-medium transition ${
+              filter === 'been-to'
+              ? 'bg-green-500 text-white shadow-sm'
+              : 'bg-white text-gray-700 border border-gray-200 hover:border-green-200'
+            }`}>
+            ✅ Been To ({beenToCount})
           </button>
         </div>
 
