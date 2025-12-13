@@ -16,23 +16,30 @@
     --color-burgundy-900: #5A0116;
     --color-burgundy-950: #3D000F;
 
-    /* Cream/Background tones */
-    --color-cream: #F5F1E6;
-    --color-cream-50: #FDFCF9;
-    --color-cream-100: #F5F1E6; /* Original */
-    --color-cream-200: #EBE4D3;
+    /* Orange Scale - Warm, vibrant tones */
+    --color-orange-50: #FFF7ED;
+    --color-orange-100: #FFEDD5;
+    --color-orange-200: #FED7AA;
+    --color-orange-300: #FDBA74;
+    --color-orange-400: #FB923C;
+    --color-orange-500: #F97316;
+    --color-orange-600: #EA580C;
+    --color-orange-700: #C2410C;
+    --color-orange-800: #9A3412;
+    --color-orange-900: #7C2D12;
 
-    /* Slate accent - Modern, cool contrast to warm burgundy */
-    --color-slate-50: #F8FAFC;
-    --color-slate-100: #F1F5F9;
-    --color-slate-200: #E2E8F0;
-    --color-slate-300: #CBD5E1;
-    --color-slate-400: #94A3B8;
-    --color-slate-500: #64748B;
-    --color-slate-600: #475569;
-    --color-slate-700: #334155;
-    --color-slate-800: #1E293B;
-    --color-slate-900: #0F172A;
+    /* Cream/Background tones */
+    --color-cream-50: #FDFCF9;
+    --color-cream-100: #FBF8F3;
+    --color-cream-200: #F5F1E6; /* Original */
+    --color-cream-300: #EFE9DA;
+    --color-cream-400: #E7DFC9;
+    --color-cream-500: #DFD5B8;
+    --color-cream-600: #C8B897;
+    --color-cream-700: #A89977;
+    --color-cream-800: #7A6D55;
+    --color-cream-900: #5A5040;
+    --color-cream: #F5F1E6; /* Alias for cream-200 */
 }
 
 
