@@ -1,6 +1,40 @@
 @import "tailwindcss";
 
 
+@theme {
+
+    /* Burgundy Scale - Rich, sophisticated wine tones */
+    --color-burgundy-50: #FBF6F7;
+    --color-burgundy-100: #F7EBEE;
+    --color-burgundy-200: #EDD3D9;
+    --color-burgundy-300: #E0B3BD;
+    --color-burgundy-400: #CE8794;
+    --color-burgundy-500: #B85D6E;
+    --color-burgundy-600: #9D3D51;
+    --color-burgundy-700: #A0204A;
+    --color-burgundy-800: #7B011E; /* Original */
+    --color-burgundy-900: #5A0116;
+    --color-burgundy-950: #3D000F;
+
+    /* Cream/Background tones */
+    --color-cream: #F5F1E6;
+    --color-cream-50: #FDFCF9;
+    --color-cream-100: #F5F1E6; /* Original */
+    --color-cream-200: #EBE4D3;
+
+    /* Slate accent - Modern, cool contrast to warm burgundy */
+    --color-slate-50: #F8FAFC;
+    --color-slate-100: #F1F5F9;
+    --color-slate-200: #E2E8F0;
+    --color-slate-300: #CBD5E1;
+    --color-slate-400: #94A3B8;
+    --color-slate-500: #64748B;
+    --color-slate-600: #475569;
+    --color-slate-700: #334155;
+    --color-slate-800: #1E293B;
+    --color-slate-900: #0F172A;
+}
+
 
 /* Google Places Autocomplete Container */
 .pac-container {
