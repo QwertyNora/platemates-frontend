@@ -110,18 +110,18 @@ export function RestaurantMap({ restaurants, onMarkerClick }: RestaurantMapProps
       };
 
       // Custom marker colors based on status
-      const markerColor = status === 'WantToGo' ? '#06b6d4' : '#f97316'; // cyan-500 : orange-500
+      const markerColor = status === 'WantToGo' ? '#f97316' : '#06b6d4'; // orange-500 : cyan-500
       
-      // Create SVG marker icon
+      // Create modern pin marker icon
       const svgMarker = {
-        path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z',
+        path: 'M12 0C7.31 0 3.5 3.81 3.5 8.5C3.5 14.88 12 24 12 24S20.5 14.88 20.5 8.5C20.5 3.81 16.69 0 12 0ZM12 11.5C10.07 11.5 8.5 9.93 8.5 8C8.5 6.07 10.07 4.5 12 4.5C13.93 4.5 15.5 6.07 15.5 8C15.5 9.93 13.93 11.5 12 11.5Z',
         fillColor: markerColor,
         fillOpacity: 1,
-        strokeWeight: 2,
+        strokeWeight: 1.5,
         strokeColor: '#ffffff',
         rotation: 0,
-        scale: 1.5,
-        anchor: new window.google.maps.Point(12, 22),
+        scale: 1.2,
+        anchor: new window.google.maps.Point(12, 24),
       };
 
       const marker = new window.google.maps.Marker({
@@ -195,9 +195,9 @@ export function RestaurantMap({ restaurants, onMarkerClick }: RestaurantMapProps
   }, [restaurants, isMapReady]);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full rounded-xl border border-gray-50 shadow-sm">
       {!isMapReady && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-2xl">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-xl">
           <div className="text-center">
             <svg
               className="animate-spin h-8 w-8 text-orange-500 mx-auto mb-2"
