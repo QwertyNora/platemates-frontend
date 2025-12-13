@@ -64,52 +64,109 @@ export default function FeedPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold text-gray-900">My Restaurants</h1>
-            <button
-              onClick={() => setIsAddModalOpen(true)}
-              className="px-4 py-2 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition font-semibold flex items-center gap-2"
-            >
-              <span className="text-lg">+</span>
-              Add Restaurant
-            </button>
+    <div className="min-h-screen bg-cream-100">
+      {/* Sticky Filter Header */}
+      <div className="sticky top-14 sm:top-16 z-20 bg-cream-100 sm:mask-b-from-70% sm:mask-b-to-100%">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Mobile Layout */}
+          <div className="py-3 sm:hidden">
+            <div className="flex items-center justify-between mb-3">
+              <h1 className="text-xl font-bold text-slate-900">Restaurants</h1>
+              <button
+                onClick={() => setIsAddModalOpen(true)}
+                className="w-10 h-10 bg-orange-600 text-white rounded-lg hover:bg-orange-500 transition-colors flex items-center justify-center shadow-lg"
+              >
+                <span className="text-2xl leading-none">+</span>
+              </button>
+            </div>
+            
+            {/* Mobile Filter Chips */}
+            <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-hide">
+              <button
+                onClick={() => setFilter('all')}
+                className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  filter === 'all'
+                    ? 'bg-orange-600 text-white shadow-md'
+                    : 'bg-white text-slate-700 border border-slate-200'
+                }`}
+              >
+                All · {totalCount}
+              </button>
+              <button
+                onClick={() => setFilter('want-to-go')}
+                className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  filter === 'want-to-go'
+                    ? 'bg-orange-600 text-white shadow-md'
+                    : 'bg-white text-slate-700 border border-slate-200'
+                }`}
+              >
+                Want to Go · {wantToGoCount}
+              </button>
+              <button
+                onClick={() => setFilter('been-to')}
+                className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  filter === 'been-to'
+                    ? 'bg-orange-600 text-white shadow-md'
+                    : 'bg-white text-slate-700 border border-slate-200'
+                }`}
+              >
+                Been to · {beenToCount}
+              </button>
+            </div>
           </div>
 
-          {/* Filter Buttons */}
-          <div className="flex gap-2 overflow-x-auto pb-2">
+          {/* Desktop Layout */}
+          <div className="hidden sm:flex items-center justify-between py-4">
+            <div className="flex items-center gap-6">
+              <h1 className="text-2xl font-bold text-slate-900">My Restaurants</h1>
+              
+              {/* Desktop Filter Tabs */}
+              <div className="flex gap-1 bg-white border border-cream-100 rounded-lg p-1 shadow-sm">
+                <button
+                  onClick={() => setFilter('all')}
+                  className={`px-4 rounded-lg text-sm transition-all ${
+                    filter === 'all'
+                      ? 'bg-cream-200 text-slate-900 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  All ({totalCount})
+                </button>
+                <button
+                  onClick={() => setFilter('want-to-go')}
+                  className={`px-4 py-2 rounded-lg text-sm transition-all flex items-center ${
+                    filter === 'want-to-go'
+                      ? 'bg-cream-200 text-slate-900 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <span className='w-2 h-2 rounded-lg bg-orange-400 mr-2'/>
+                  Want to Go ({wantToGoCount})
+                </button>
+                <button
+                  onClick={() => setFilter('been-to')}
+                  className={`px-4 py-2 rounded-lg text-sm  transition-all flex items-center ${
+                    filter === 'been-to'
+                      ? 'bg-cream-200 text-slate-900 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <span className='w-2 h-2 rounded-lg bg-cyan-500 mr-2'/>
+                 Been To ({beenToCount})
+                </button>
+              </div>
+            </div>
+            
             <button
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-lg font-medium transition whitespace-nowrap ${
-                filter === 'all'
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+              onClick={() => setIsAddModalOpen(true)}
+              className="px-5 py-2 
+              text-sm
+              bg-orange-600 text-white rounded-lg
+              border border-white
+              hover:bg-orange-700 transition-all flex items-center gap-2 shadow-sm hover:shadow-md"
             >
-              All ({totalCount})
-            </button>
-            <button
-              onClick={() => setFilter('want-to-go')}
-              className={`px-4 py-2 rounded-lg font-medium transition whitespace-nowrap ${
-                filter === 'want-to-go'
-                  ? 'bg-cyan-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              🎯 Want to Go ({wantToGoCount})
-            </button>
-            <button
-              onClick={() => setFilter('been-to')}
-              className={`px-4 py-2 rounded-lg font-medium transition whitespace-nowrap ${
-                filter === 'been-to'
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              ✅ Been To ({beenToCount})
+              <span className="leading-none">+</span>
+              <span>Add Restaurant</span>
             </button>
           </div>
         </div>
@@ -120,12 +177,17 @@ export default function FeedPage() {
         {restaurants && restaurants.length > 0 ? (
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Map Section - Top on mobile, Left on desktop */}
-            <div className="w-full lg:w-1/2 h-[400px] lg:h-[calc(100vh-220px)] lg:sticky lg:top-[180px]">
+            <div className="w-full lg:w-2/3 h-[400px] lg:h-[calc(100vh-220px)] lg:sticky lg:top-[180px]">
               <RestaurantMap restaurants={restaurants} />
             </div>
 
             {/* List Section - Bottom on mobile, Right on desktop */}
-            <div className="w-full lg:w-1/2">
+            <div className="w-full lg:w-1/3">
+              <p className="text-gray-600 text-xl mb-4">
+                {filter === 'all' && 'All your saved restaurants:'}
+                {filter === 'want-to-go' && 'Restaurants you want to try:'}
+                {filter === 'been-to' && 'Restaurants you\'ve visited:'}
+              </p>
               <div className="space-y-4">
                 {restaurants.map((userRestaurant) => (
                   <RestaurantCard
