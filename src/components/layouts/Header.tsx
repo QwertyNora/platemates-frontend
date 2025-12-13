@@ -22,22 +22,22 @@ export function Header() {
         <div className="flex justify-between items-center h-14 sm:h-16">
           <Logo />
 
-          <nav className="flex items-center gap-2 sm:gap-4 lg:gap-6">
+          <nav className="flex items-center gap-3 sm:gap-4">
             <SignedOut>
               <SignInButton mode="modal">
                 <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base text-slate-700 font-semibold hover:text-orange-600 transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-3 py-1.5 text-sm text-slate-700 font-medium hover:text-orange-600 transition-colors"
                 >
                   Sign In
                 </motion.button>
               </SignInButton>
               <Link href="/sign-up">
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-4 py-2 sm:px-6 sm:py-2.5 text-sm sm:text-base bg-orange-600 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:bg-orange-500 transition-all"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-4 py-1.5 text-sm bg-orange-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:bg-orange-700 transition-all"
                 >
                   Sign Up
                 </motion.div>
@@ -47,9 +47,9 @@ export function Header() {
             <SignedIn>
               <Link href="/feed">
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base text-slate-700 font-semibold hover:text-orange-600 transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-3 py-1.5 text-sm text-slate-700 font-medium hover:text-orange-600 transition-colors"
                 >
                   Feed
                 </motion.div>
@@ -59,7 +59,7 @@ export function Header() {
                 <motion.div
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="hidden sm:flex px-3 py-1.5 bg-white text-orange-600 text-xs sm:text-sm  rounded-lg border border-orange-200 shadow-sm"
+                  className="hidden sm:flex px-3 py-1 bg-white text-orange-600 text-xs rounded-lg border border-orange-200 shadow-sm"
                 >
                   @{backendUser.username}
                 </motion.div>
