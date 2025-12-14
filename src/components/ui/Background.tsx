@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 export function Background() {
@@ -12,8 +14,8 @@ export function Background() {
         quality={100}
         unoptimized
       />
-      {/* Overlay gradient for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-50/70 via-cream-50/60 to-orange-100/70" />
+      {/* Overlay gradient */}
+      <div className="absolute inset-0 bg-linear-to-br from-orange-50/70 via-cream-50/60 to-orange-100/70" />
     </div>
   );
 }
