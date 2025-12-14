@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useUpdateRestaurant } from '@/lib/hooks/useRestaurantMutations';
 import type { UserRestaurant, UpdateRestaurantDto } from '@/types/models';
+import { X, Loader2 } from 'lucide-react';
 
 interface EditRestaurantModalProps {
   isOpen: boolean;
@@ -90,37 +91,25 @@ export function EditRestaurantModal({
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative w-full max-w-2xl max-h-[90vh] bg-white rounded-2xl shadow-2xl mx-4 flex flex-col">
+      <div className="relative w-full max-w-2xl max-h-[90vh] bg-white rounded-xl shadow-xl mx-4 flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-2xl font-bold text-gray-900">Edit Restaurant</h2>
+        <div className="flex items-center justify-between p-6 border-b border-slate-200">
+          <h2 className="text-xl font-semibold text-slate-900">Edit Restaurant</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition"
+            className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors"
             type="button"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <X className="w-5 h-5 text-slate-500" />
           </button>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6">
-          <div className="space-y-6">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 bg-white">
+          <div className="space-y-5">
             {/* Restaurant Name */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-900 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1.5">
                 Restaurant Name *
               </label>
               <input
@@ -131,13 +120,13 @@ export function EditRestaurantModal({
                 onChange={handleChange}
                 required
                 maxLength={256}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 bg-cream-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow text-slate-900"
               />
             </div>
 
             {/* Address */}
             <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-900 mb-2">
+              <label htmlFor="address" className="block text-sm font-medium text-slate-700 mb-1.5">
                 Address *
               </label>
               <input
@@ -148,13 +137,13 @@ export function EditRestaurantModal({
                 onChange={handleChange}
                 required
                 maxLength={512}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 bg-cream-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow text-slate-900"
               />
             </div>
 
             {/* Cuisine Type */}
             <div>
-              <label htmlFor="cuisineType" className="block text-sm font-medium text-gray-900 mb-2">
+              <label htmlFor="cuisineType" className="block text-sm font-medium text-slate-700 mb-1.5">
                 Cuisine Type
               </label>
               <input
@@ -164,13 +153,13 @@ export function EditRestaurantModal({
                 value={formData.cuisineType}
                 onChange={handleChange}
                 maxLength={128}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 bg-cream-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow text-slate-900"
               />
             </div>
 
             {/* Notes */}
             <div>
-              <label htmlFor="notes" className="block text-sm font-medium text-gray-900 mb-2">
+              <label htmlFor="notes" className="block text-sm font-medium text-slate-700 mb-1.5">
                 Notes
               </label>
               <textarea
@@ -181,20 +170,20 @@ export function EditRestaurantModal({
                 placeholder="Why do you want to go here?"
                 rows={4}
                 maxLength={1000}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-2.5 bg-cream-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-shadow resize-none text-slate-900 placeholder:text-slate-400"
               />
             </div>
           </div>
         </form>
 
         {/* Footer */}
-        <div className="p-6 border-t">
+        <div className="p-6 rounded-b-2xl border-t border-slate-200 bg-cream-50">
           <div className="flex gap-3">
             <button
               type="button"
               onClick={onClose}
               disabled={updateMutation.isPending}
-              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-medium disabled:opacity-50"
+              className="flex-1 px-6 py-2.5 border border-slate-300 text-slate-700 rounded-lg hover:bg-white transition-colors font-medium disabled:opacity-50"
             >
               Cancel
             </button>
@@ -202,9 +191,16 @@ export function EditRestaurantModal({
               type="submit"
               onClick={handleSubmit}
               disabled={updateMutation.isPending || !formData.name || !formData.address}
-              className="flex-1 px-6 py-3 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-6 py-2.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+              {updateMutation.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                'Save Changes'
+              )}
             </button>
           </div>
 
