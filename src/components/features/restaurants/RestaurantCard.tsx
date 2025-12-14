@@ -7,6 +7,7 @@ import { ConfirmDeleteReviewModal } from '@/components/features/modals/ConfirmDe
 import { EditRestaurantModal } from '@/components/features/modals/EditRestaurantModal';
 import { ConfirmDeleteRestaurantModal } from '@/components/features/modals/ConfirmDeleteRestaurantModal';
 import { RestaurantCardDropdown } from './RestaurantCardDropdown';
+import { MapPin, Utensils, Star, CheckCircle2, Target, DollarSign } from 'lucide-react';
 
 interface RestaurantCardProps {
   userRestaurant: UserRestaurant;
@@ -29,142 +30,130 @@ export function RestaurantCard({ userRestaurant }: RestaurantCardProps) {
     day: 'numeric',
   });
 
+  // Remove country from address (last word after final comma)
+  const formattedAddress = restaurant.address.replace(/,\s*\w+\s*$/, '');
+
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:shadow-md hover:border-orange-200 transition-all">
         {/* Header */}
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex-1">
-            <h3 className="text-xl font-bold text-gray-900 mb-1">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">
               {restaurant.name}
             </h3>
-            <p className="text-sm text-gray-600 flex items-center gap-1">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-              {restaurant.address}
-            </p>
+            
+            {/* Address - Below title */}
+            <div className="flex items-start gap-1.5 mb-2">
+              <MapPin className="w-3.5 h-3.5 text-slate-500 mt-0.5 flex-shrink-0" />
+              <p className="text-sm text-slate-600">
+                {formattedAddress}
+              </p>
+            </div>
+
+            {/* Cuisine Type */}
+            {restaurant.cuisineType && (
+              <div className="inline-flex items-center gap-1.5 text-xs text-slate-600 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-100">
+                <Utensils className="w-3.5 h-3.5" />
+                {restaurant.cuisineType}
+              </div>
+            )}
           </div>
 
-          {/* Status Badge */}
+          {/* Status Badge on the right */}
           <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold ${
+            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium whitespace-nowrap ${
               isBeenTo
-                ? 'bg-green-100 text-green-700'
-                : 'bg-orange-100 text-orange-700'
+                ? 'bg-cyan-50 text-cyan-700 border border-cyan-200'
+                : 'bg-orange-50 text-orange-700 border border-orange-200'
             }`}
           >
-            {isBeenTo ? '✅ Been To' : '🎯 Want to Go'}
+            {isBeenTo ? (
+              <>
+                <CheckCircle2 className="w-3 h-3" />
+                Been To
+              </>
+            ) : (
+              <>
+                <Target className="w-3 h-3" />
+                Want to Go
+              </>
+            )}
           </span>
         </div>
-
-        {/* Cuisine Type */}
-        {restaurant.cuisineType && (
-          <div className="mb-3">
-            <span className="inline-flex items-center gap-1 text-sm text-gray-700 bg-gray-100 px-3 py-1 rounded-full">
-              🍽️ {restaurant.cuisineType}
-            </span>
-          </div>
-        )}
 
         {/* Content - Different for BeenTo vs WantToGo */}
         {isBeenTo && review ? (
           // Been To - Show Review
-          <div className="mb-3 space-y-2">
+          <div className="mb-4 mt-4 pt-4 border-t border-slate-100">
             {/* Rating & Price */}
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1">
-                <span className="text-sm font-medium text-gray-700">Rating:</span>
-                <span className="text-lg">{'⭐'.repeat(review.rating)}</span>
+            <div className="flex items-center gap-6 mb-3">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-4 h-4 ${
+                        i < review.rating
+                          ? 'fill-orange-400 text-orange-400'
+                          : 'text-slate-200'
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
-              <div className="flex items-center gap-1">
-                <span className="text-sm font-medium text-gray-700">Price:</span>
-                <span className="text-lg text-gray-700">{'€'.repeat(review.priceRange)}</span>
+              <div className="flex items-center gap-1.5 text-slate-700">
+                {[...Array(review.priceRange)].map((_, i) => (
+                  <DollarSign key={i} className="w-3.5 h-3.5" />
+                ))}
               </div>
             </div>
             
             {/* Review Notes */}
             {review.notes && (
-              <p className="text-sm text-gray-700 italic">"{review.notes}"</p>
+              <p className="text-sm text-slate-600 leading-relaxed italic border-l-2 border-orange-200 pl-3">
+                {review.notes}
+              </p>
             )}
           </div>
         ) : (
           // Want to Go - Show Notes
           notes && (
-            <div className="mb-3">
-              <p className="text-sm text-gray-700 italic">"{notes}"</p>
+            <div className="mt-4 pt-4 border-t border-slate-100">
+              <p className="text-sm text-slate-600 leading-relaxed italic border-l-2 border-orange-200 pl-3">
+                {notes}
+              </p>
             </div>
           )
         )}
 
         {/* Footer with Action Buttons */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-          <span className="text-xs text-gray-500">Added {formattedDate}</span>
+        <div className="flex items-center justify-between pt-3 mt-3 border-t border-slate-100">
+          <span className="text-xs text-slate-500">Added {formattedDate}</span>
 
-          {/* Action Buttons */}
           <div className="flex items-center gap-2">
-            {/* Mark as Been To / Want to Go Button */}
+            {/* Action Button - Toggle Status */}
             {isBeenTo ? (
               <button
                 onClick={() => setIsConfirmDeleteReviewOpen(true)}
-                className="flex items-center gap-1 px-3 py-1.5 text-sm text-orange-700 hover:text-orange-800 bg-orange-50 hover:bg-orange-100 rounded-lg transition font-medium"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-orange-600 hover:bg-orange-50 rounded-lg transition-colors border border-orange-200 hover:border-orange-300"
                 title="Mark as Want to Go"
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
-                  />
-                </svg>
-                Mark as Want to Go
+                <Target className="w-3.5 h-3.5" />
+                Move to Want to Go
               </button>
             ) : (
               <button
                 onClick={() => setIsReviewModalOpen(true)}
-                className="flex items-center gap-1 px-3 py-1.5 text-sm text-green-700 hover:text-green-800 bg-green-50 hover:bg-green-100 rounded-lg transition font-medium"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors border border-cyan-200 hover:border-cyan-300"
                 title="Mark as Been To"
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                Mark as Been To
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                Move to Been To
               </button>
             )}
 
-            {/* Dropdown Menu (More Options) */}
+            {/* Dropdown Menu */}
             <RestaurantCardDropdown
               onEdit={() => setIsEditModalOpen(true)}
               onDelete={() => setIsConfirmDeleteRestaurantOpen(true)}
