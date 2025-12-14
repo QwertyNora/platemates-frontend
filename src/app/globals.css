@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
-
 @theme {
+    /* Font Families - maps to font-outfit utility class */
+    --font-outfit: var(--font-outfit);
 
     /* Burgundy Scale - Rich, sophisticated wine tones */
     --color-burgundy-50: #FBF6F7;
