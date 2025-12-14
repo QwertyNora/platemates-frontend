@@ -33,13 +33,13 @@ export default async function Home() {
         </div>
         
         {/* Title */}
-        <h1 className="text-6xl md:text-7xl font-bold mb-4 text-white" style={{ textShadow: '0 0 1px #ea580c, 0 0 2px #ea580c, 0 0 3px #ea580c' }}>
+        <h1 className="font-outfit text-6xl md:text-7xl font-bold mb-4 text-white" >
           Platemates
         </h1>
         
         {/* Subtitle */}
         <div className="relative inline-block mb-12">
-          <p className="text-xl md:text-2xl text-slate-800 font-light"
+          <p className="fort-outfit italic text-xl md:text-2xl text-slate-800 font-light"
           >
             Discover, save, and share your favorite restaurants
           </p>
