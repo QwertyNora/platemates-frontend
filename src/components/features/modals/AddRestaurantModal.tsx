@@ -7,7 +7,7 @@ import { useAddRestaurantManually } from '@/lib/hooks/useAddRestaurant';
 import { getPlaceDetails } from '@/lib/api/restaurantService';
 import { useAuth } from '@clerk/nextjs';
 import type { GooglePlacePrediction, AddRestaurantManuallyDto } from '@/types/models';
-import { Plus, Search, X, Loader2 } from 'lucide-react';
+import { Plus, Search, X, Loader2, PencilLine } from 'lucide-react';
 
 interface AddRestaurantModalProps {
   isOpen: boolean;
@@ -157,7 +157,7 @@ export function AddRestaurantModal({ isOpen, onClose }: AddRestaurantModalProps)
             }`}
             type="button"
           >
-            <Plus className="w-4 h-4" />
+            <PencilLine className="w-4 h-4" />
             Add Manually
           </button>
         </div>
