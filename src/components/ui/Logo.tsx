@@ -24,7 +24,7 @@ export function Logo() {
         />
       </motion.div>
         </div>
-      <span className="font-bold text-xl  ">
+      <span className="font-outfit font-bold text-xl  ">
         Platemates
       </span>
     </Link>
