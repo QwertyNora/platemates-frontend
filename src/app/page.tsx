@@ -43,15 +43,7 @@ export default async function Home() {
           >
             Discover, save, and share your favorite restaurants
           </p>
-          <svg className="absolute -bottom-2 left-0 w-full h-3" viewBox="0 0 400 12" preserveAspectRatio="none">
-            <path
-              d="M 0 6 Q 10 3, 20 6 T 40 6 T 60 6 T 80 6 T 100 6 T 120 6 T 140 6 T 160 6 T 180 6 T 200 6 T 220 6 T 240 6 T 260 6 T 280 6 T 300 6 T 320 6 T 340 6 T 360 6 T 380 6 T 400 6"
-              stroke="#f97316"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-            />
-          </svg>
+          
         </div>
         
         {/* CTA Buttons */}
