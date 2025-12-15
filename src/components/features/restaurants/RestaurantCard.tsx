@@ -146,7 +146,8 @@ export function RestaurantCard({ userRestaurant }: RestaurantCardProps) {
             ) : (
               <button
                 onClick={() => setIsReviewModalOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors border border-cyan-200 hover:border-cyan-300"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors border border-cyan-200 hover:border-cyan-300
+                cursor-pointer"
                 title="Mark as Been To"
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
