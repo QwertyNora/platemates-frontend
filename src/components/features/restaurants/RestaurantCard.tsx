@@ -136,7 +136,8 @@ export function RestaurantCard({ userRestaurant }: RestaurantCardProps) {
             {isBeenTo ? (
               <button
                 onClick={() => setIsConfirmDeleteReviewOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-orange-600 hover:bg-orange-50 rounded-lg transition-colors border border-orange-200 hover:border-orange-300"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-orange-600 hover:bg-orange-50 rounded-lg transition-colors border border-orange-200 hover:border-orange-300
+                cursor-pointer"
                 title="Mark as Want to Go"
               >
                 <Target className="w-3.5 h-3.5" />
